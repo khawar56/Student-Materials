@@ -27,8 +27,30 @@ def test_password():
     result = checkPassword.check_password(name,password)
     if not result:
         assert False
-                
-            
+
+#testing wrong password                 
+def test_password_fail(): #fail test
+    name = "akend3"
+    password = "xyz"
+    #when entered different password like the comment below, assertion is raised 
+    #password = "123"
+    checkPassword = System.System()
+    result = checkPassword.check_password(name,password)
+    if not result:
+        assert False
+        
+        
+#testing wrong username                 
+def test_username_fail(): #fail test
+    name = "khawar"
+    password = "xyz"
+    #when entered different password like the comment below, assertion is raised 
+    #password = "123"
+    checkPassword = System.System()
+    result = checkPassword.check_password(name,password)
+    if not result:
+        assert False
+
 def test_change_grade():
     name = "akend3"
     course = "comp_sci"
@@ -46,8 +68,25 @@ def test_change_grade():
     else:
         assert False    
         
+##changing grade of a user that does not exisit 
+def test_change_grade_fail(): ##fail test
+    name = "khawar"
+    course = "someCourse"
+    assignment = "assignmentXYZ"
+    g = 10
+    changeGrade = Staff.Staff()
+    changeGrade.change_grade(name, course, assignment,g)
+    
+    with open('Data/users.json') as f:
+        data = json.load(f)
+        #self.users[user]['courses'][course][assignment]['grade'] = 0
+        grade = data["khawar"]['courses']["someCourse"]["assignment1"]["grade"]
+    if grade == 0:
+        assert True
+    else:
+        assert False  
 
-def test_create_assignment():
+def test_create_assignment(): ##fail
     assignment_name = "meh"
     due_date = "never mind"
     course = "bruh"
@@ -62,7 +101,7 @@ def test_create_assignment():
         assert False    
     
     
-def test_add_student():
+def test_add_student(): ##fail
     name = "khawar"
     course = "comp_sci"
     
@@ -107,9 +146,29 @@ def test_drop_student():
     else:
         assert False 
         
+##dropping student which does not exist 
+def test_drop_student_fail(): #fail
+    name = "khawar"    
+    course = "someCourse"
+    
+    with open('Data/courses.json') as f:
+        all_courses = json.load(f)
         
+    with open('Data/users.json') as f:
+        all_users = json.load(f)
         
-def test_submit_assignment():
+    drop_student = Professor.Professor(name,all_users,all_courses)
+    drop_student.add_student(name,course)  
+    
+    with open('Data/users.json') as f:
+        users = json.load(f)
+    
+    if name in users:
+        assert True    
+    else:
+        assert False         
+        
+def test_submit_assignment(): ##fail 
     name = "akend3"    
     course = "comp_sci"
     
@@ -153,7 +212,24 @@ def test_submission_on_time():
     else:
         assert False
         
-def test_check_grades():
+##incorrect user name testing
+def test_submission_on_time_fail():  ##fail 
+    name = "khawar"    
+    with open('Data/courses.json') as f:
+        all_courses = json.load(f)
+        
+    with open('Data/users.json') as f:
+        all_users = json.load(f)
+    on_time = Student.Student(name,all_users,all_courses)
+    submission_date = ""
+    due_date = ""
+    
+    if on_time.check_ontime(submission_date,due_date):
+        assert True
+    else:
+        assert False        
+        
+def test_check_grades():  ##fail
     name = "akend3"    
     course = "comp_sci"
     with open('Data/courses.json') as f:
@@ -170,7 +246,7 @@ def test_check_grades():
     else:
         assert False    
 
-def test_view_assignments():
+def test_view_assignments(): ##fail 
     name = "akend3"    
     course = "comp_sci"
     with open('Data/courses.json') as f:
